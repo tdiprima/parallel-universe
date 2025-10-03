@@ -1,13 +1,10 @@
 """
-Tenacity-based retry example with joblib parallel execution
+Tenacity + Joblib Retry Example
 
-This example demonstrates using the tenacity library for robust retry logic
-with exponential backoff. Tenacity provides better retry handling than
-manual retry loops with configurable stop conditions and wait strategies.
+Shows how to use Tenacity for clean exponential backoff retries when running tasks in parallel.
 
-The issue is that the @retry decorator from tenacity creates a wrapper that contains thread-local
-objects that can't be pickled. The solution is to move the retry logic inside the function that gets
-executed in parallel, rather than decorating the function itself.
+⚠️ Gotcha: Tenacity's @retry decorator can't be pickled (thread-local stuff), so don't decorate the function directly.
+✅ Instead, put the retry logic inside the function that runs in parallel.
 """
 
 import random
@@ -35,8 +32,10 @@ def safe_flaky(x):
         return ("error", x, str(e))
 
 
+# Run safe_flaky(i) in parallel across 4 processes for i = 0..9
 results = Parallel(n_jobs=4)(delayed(safe_flaky)(i) for i in range(10))
 
+# Loop over each item in results, unpack tuple, only keep the "ok" tuples
 successes = [(inp, out) for tag, inp, out in results if tag == "ok"]
 errors = [(inp, err) for tag, inp, err in results if tag == "error"]
 
