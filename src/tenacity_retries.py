@@ -14,20 +14,20 @@ from tenacity import RetryError, retry, stop_after_attempt, wait_exponential
 
 
 def flaky_task(x):
-    # Create the retry decorator inside the function to avoid pickling issues
-    @retry(stop=stop_after_attempt(3), wait=wait_exponential(multiplier=1, min=1, max=4))
-    def _task():
-        # Simulate 30% failure chance
-        if random.random() < 0.3:
-            raise RuntimeError(f"Task {x} failed")
-        return x * 2
-    
-    return _task()
+    # Simulate 30% failure chance
+    if random.random() < 0.3:
+        raise RuntimeError(f"Task {x} failed")
+    return x * 2
 
 
 def safe_flaky(x):
+    # Create the retry decorator inside the parallel function to avoid pickling issues
+    @retry(stop=stop_after_attempt(3), wait=wait_exponential(multiplier=1, min=1, max=4))
+    def _flaky_with_retry():
+        return flaky_task(x)
+    
     try:
-        return ("ok", x, flaky_task(x))
+        return ("ok", x, _flaky_with_retry())
     except RetryError as e:
         return ("error", x, str(e))
 
