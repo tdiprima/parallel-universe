@@ -1,4 +1,4 @@
-# parallel-universe
+# parallel-universe 🪐
 ## JobLib Junction
 
 `joblib` makes it stupid-easy to run things in parallel in Python. Instead of stressing about threading or managing processes yourself, you just wrap your functions and let `joblib` handle the CPU hustle. It's especially clutch for **embarrassingly parallel tasks** — basically when you're running the same function independently on a bunch of data chunks.
