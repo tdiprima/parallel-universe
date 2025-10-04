@@ -44,4 +44,10 @@ This pattern is super popular in the scientific Python world (think scikit-learn
 **Tenacity = polished, flexible, and clean** for most retry scenarios.  
 **Manual retries = lightweight and ultra-custom** when you need max control or are working in tricky parallel setups.
 
+---
+
+## Note
+
+This repo was originally intended for parallel processing à la joblib, but I'm extending it to include concurrency as well.
+
 <br>
