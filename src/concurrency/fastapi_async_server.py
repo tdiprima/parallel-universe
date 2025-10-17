@@ -1,6 +1,6 @@
 # 🌟 FastAPI async magic! A web server that doesn't break a sweat.
 # While one request sleeps, thousands of others can dance through.
-# Non-blocking I/O = happy users and happy servers! ⚡
+# Non-blocking I/O = happy users and happy servers! ⚡️
 
 import asyncio
 
